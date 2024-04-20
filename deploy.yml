@@ -1,0 +1,21 @@
+---
+- name: Deploy da aplicação.
+  hosts: webservers
+  become: yes
+
+  tasks:
+    - name: Clonar repositório
+      git:
+        repo: https://github.com/Azure-Samples/azure-voting-app-redis.git
+        dest: /home/ubuntu/azure-voting-app-redis
+        update: yes
+
+    - name: Acessar pasta do projeto
+      become_user: ubuntu
+      shell: cd /home/ubuntu/azure-voting-app-redis
+
+    - name: Run Docker Compose
+      become: true
+      shell: docker-compose up -d
+      args:
+        chdir: /home/ubuntu/azure-voting-app-redis

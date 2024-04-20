@@ -1,0 +1,28 @@
+---
+- name: política de senhas do sistema
+  hosts: webservers
+  become: true
+  tasks:   
+    - name: Instalar libpam-pwquality
+      apt:
+        name: libpam-pwquality
+        state: present
+    
+    - name: Configurar
+      lineinfile:
+        path: /etc/security/pwquality.conf
+        line: "{{ item }}"
+        insertafter: EOF
+      with_items:
+        - "minlen = 8"  # Comprimento mínimo da senha
+        - "dcredit = -1"  # Número mínimo de caracteres diferentes
+        - "ucredit = 1"  # Número mínimo de letras maiúsculas
+        - "lcredit = 1"  # Número mínimo de letras minúsculas
+        - "ocredit = -1"  # Número mínimo de dígitos
+        - "lcredit = 1"  # Número mínimo de caracteres especiais
+
+  handlers:
+    - name: reload pam
+      service:
+        name: ssh
+        state: restarted
