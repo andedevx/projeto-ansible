@@ -31,11 +31,13 @@ jobs:
           terraform_version: 0.14.7
       
       - name: Prepare SSH Key
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.KEYDEV }}
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.pem_key }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/my_key
+          chmod 600 ~/.ssh/my_key
+          
       - name: Terraform Init
         run: terraform init
 
