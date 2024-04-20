@@ -33,8 +33,8 @@ jobs:
     - name: Create SSH Key
       run: |
         mkdir -p ~/.ssh
-        echo "${{ secrets.KEYDEV }}" > ~/.ssh/id_rsa
-        echo "${{ secrets.KEYDEV }}" > ~/.ssh/id_rsa.pub
+        echo "${{ secrets.DEVKEY }}" > ~/.ssh/id_rsa
+        echo "${{ secrets.SDEVKEY }}" > ~/.ssh/id_rsa.pub
         chmod 600 ~/.ssh/id_rsa
         chmod 644 ~/.ssh/id_rsa.pub
         
@@ -42,6 +42,7 @@ jobs:
       run: |
         mkdir -p ssh
         cp ~/.ssh/id_rsa.pub ssh/my_key.pub
+
       - name: Terraform Init
         run: terraform init
 
