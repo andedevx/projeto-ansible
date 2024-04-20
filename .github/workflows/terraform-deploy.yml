@@ -29,9 +29,12 @@ jobs:
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 0.14.7
-
+      
       - name: Prepare SSH Key
-        run: echo "${{ secrets.pem_key }}" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.pem_key }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
 
       - name: Terraform Init
         run: terraform init
