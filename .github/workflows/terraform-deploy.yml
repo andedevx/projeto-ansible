@@ -30,11 +30,18 @@ jobs:
         with:
           terraform_version: 0.14.7
       
-      - name: Prepare SSH Key
+     - name: Create SSH Key
         run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.pem_key }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        echo "${{ secrets.SSH_PUBLIC_KEY }}" > ~/.ssh/id_rsa.pub
+        chmod 600 ~/.ssh/id_rsa
+        chmod 644 ~/.ssh/id_rsa.pub
+        
+     - name: Move SSH Key to ssh/ directory
+        run: |
+        mkdir -p ssh
+        cp ~/.ssh/id_rsa.pub ssh/my_key.pub
 
       - name: Terraform Init
         run: terraform init
