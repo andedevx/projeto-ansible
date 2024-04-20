@@ -19,16 +19,11 @@ jobs:
           sudo apt-get install -y awscli
 
       - name: Configure AWS Credentials
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key_id }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_access_key }}
-          AWS_SESSION_TOKEN: ${{ secrets.aws_session_token }}
-          AWS_DEFAULT_REGION: your-aws-region
         run: |
-          aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-          aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-          aws configure set aws_session_token $AWS_SESSION_TOKEN
-          aws configure set region $AWS_DEFAULT_REGION
+          aws configure set aws_access_key_id "${{ secrets.AWS_ACCESS_KEY_ID }}"
+          aws configure set aws_secret_access_key "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+          aws configure set aws_session_token "${{ secrets.AWS_SESSION_TOKEN }}"
+          aws configure set region "${{ secrets.AWS_DEFAULT_REGION }}"
 
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
@@ -36,7 +31,7 @@ jobs:
           terraform_version: 0.14.7
 
       - name: Prepare SSH Key
-        run: echo "${{ secrets.keydev }}" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
+        run: echo "${{ secrets.pem_key }}" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
 
       - name: Terraform Init
         run: terraform init
