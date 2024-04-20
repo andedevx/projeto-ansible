@@ -38,7 +38,7 @@ jobs:
         chmod 600 ~/.ssh/id_rsa
         chmod 644 ~/.ssh/id_rsa.pub
         
-     - name: Move SSH
+      - name: Move SSH
         run: |
         mkdir -p ssh
         cp ~/.ssh/id_rsa.pub ssh/my_key.pub
